@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<head>
+<style>
+    body{
+        background-color: yellow;
+        font-size: 25px;
+        
+    }
+    h2{
+        text-align: center;
+    }
+    #foam{
+        width: 400px;
+        height: 300px;
+        box-shadow: 5px 5px 10px black, -5px -5px 10px rgb(241, 239, 239);
+        text-align: center;
+        margin-top: 8%;
+        margin-left: 35%;
+        padding-top: 2%;
+        padding-left: 2%;
+        padding-right: 2%;
+        background-color: aquamarine;
+        border-radius: 7%;
+    }
+</style>
+</head>
+<body>
+    <br>
+    <h2>Timer in javascript</h2>
+    <div id="foam">
+    <label for="time">Enter the time in foam of (hh:mm:ss) </label>
+    <input type="text" id="time" name="time" />
+    <br><br>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="stopTimer()">Stop</button>
+    <br><br>
+    <span id="timerDisplay"></span>
+    </div>
+    <audio id="alarm">
+        <source src="D:\Semester 6th\Html\sounds.mp3">
+      </audio>
+    
+    
+</body>
+
+</html>
+
+<script>
+    var time = 0;
+    var interval;
+    var timerDisplay = document.getElementById("timerDisplay");
+    var alarm = document.getElementById("alarm");
+  
+    function startTimer() {
+      var input = document.getElementById("time").value;
+      var parts = input.split(":");
+      time =
+        (parseInt(parts[0]) * 3600 +
+          parseInt(parts[1]) * 60 +
+          parseInt(parts[2])) *
+        1000;
+  
+      if (isNaN(time) || time == 0) {
+        alert("Please enter a valid time");
+        return;
+      }
+  
+      interval = setInterval(updateTimer, 1000);
+    }
+  
+    function updateTimer() {
+      if (time <= 0) {
+        clearInterval(interval);
+        timerDisplay.innerHTML = "Timer Expired";
+        alarm.play();
+        window.alert("Timer Expired");
+        return;
+      }
+  
+      time -= 1000;
+      var hours = Math.floor((time / (1000 * 60 * 60)) % 24);
+      var minutes = Math.floor((time / (1000 * 60)) % 60);
+      var seconds = Math.floor((time / 1000) % 60);
+  
+      hours = hours < 10 ? "0" + hours : hours;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+  
+      timerDisplay.innerHTML = hours + ":" + minutes + ":" + seconds;
+    }
+  
+    function stopTimer() {
+      clearInterval(interval);
+      time = 0;
+      timerDisplay.innerHTML = "";
+      alarm.pause();
+      alarm.currentTime = 0;
+    }
+  </script>
+  
